@@ -1,6 +1,6 @@
 terraform {
   backend "gcs" {
-    bucket  = "pd-tf-state-{{ deploymentName }}"
-    prefix  = "terraform/state/{{ clusterName }}"
+    bucket  = "pd-tf-state-${var.deployment_name}"
+    prefix  = "terraform/state/${var.cluster_name}"
   }
 }

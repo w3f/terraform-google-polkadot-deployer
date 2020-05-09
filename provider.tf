@@ -1,10 +1,10 @@
 provider "google" {
-  project     = "{{ projectID }}"
+  project     = var.gcp_project_id
   version     = "~>2.16"
 }
 
 provider "google-beta" {
-  project     = "{{ projectID }}"
+  project     = var.gcp_project_id
   version     = "~>2.16"
 }
 

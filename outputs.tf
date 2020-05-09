@@ -12,6 +12,7 @@ data "template_file" "kubeconfig" {
 }
 
 output "kubeconfig" {
-  value = data.template_file.kubeconfig.rendered
-  sensitive = true
+  description = "kubectl config file contents for this GKE cluster"
+  value       = data.template_file.kubeconfig.rendered
+  sensitive   = true
 }
