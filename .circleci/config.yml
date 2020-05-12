@@ -1,0 +1,74 @@
+version: 2
+
+jobs:
+  fmt:
+    docker:
+      - image: hashicorp/terraform:latest
+    steps:
+      - checkout
+      - run:
+          name: Check formating
+          command: terraform fmt --recursive -check=true
+
+  validate:
+    docker:
+      - image: hashicorp/terraform:latest
+    steps:
+      - checkout
+      - run: terraform init
+      - run:
+          name: Validate files
+          command: terraform validate
+
+  tflint:
+    docker:
+      - image: wata727/tflint
+    steps:
+      - checkout
+      - run:
+          name: TFLint
+          command: tflint
+
+
+  terratest:
+    docker:
+      - image: google/cloud-sdk:alpine
+    steps:
+      - checkout
+      - run:
+          description: Install dependencies
+          command: |
+            apk add --no-cache git make musl-dev go unzip build-base
+            export TERRAFORM_VERSION=0.12.24
+            wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
+              unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
+              chmod a+x ./terraform && \
+              mv terraform /usr/local/bin
+            wget -O /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.18.0/bin/linux/amd64/kubectl
+            chmod +x /usr/local/bin/kubectl
+      - run:
+          description: Configure gcloud
+          command: |
+            echo "$GOOGLE_APPLICATION_CREDENTIALS_CONTENT" | base64 -d > $GOOGLE_APPLICATION_CREDENTIALS
+            gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+      - run:
+          description: Integration tests
+          command: |
+            cd test
+            go test -v -timeout 45m
+
+workflows:
+  version: 2
+  test-module:
+    jobs:
+      - fmt
+      - tflint
+      - validate
+      - terratest:
+          requires:
+            - fmt
+            - tflint
+            - validate
+          filters:
+            branches:
+              only: /master/
