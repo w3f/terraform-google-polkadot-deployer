@@ -35,7 +35,7 @@ variable "image_type" {
 
 variable "gcloud_path" {
   description = "Path to gcloud binary"
-  default     = "/usr/bin/gcloud"
+  default     = "gcloud"
   type        = string
 }
 
