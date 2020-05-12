@@ -4,12 +4,6 @@ variable "cluster_name" {
   type        = string
 }
 
-variable "deployment_name" {
-  description = "Name of this polkadot deployment"
-  default     = "polkadot"
-  type        = string
-}
-
 variable "location" {
   description = "GKE location"
   type        = string
@@ -47,10 +41,5 @@ variable "gcloud_path" {
 
 variable "gcp_project_id" {
   description = "Google cloud project id used for terraform state"
-  type        = string
-}
-
-variable "gcp_credentials" {
-  description = "Either the path to or the contents of a GCP service account key file in JSON format"
   type        = string
 }
