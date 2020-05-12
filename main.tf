@@ -11,7 +11,7 @@ resource "google_container_cluster" "primary" {
   }
 
   lifecycle {
-    ignore_changes = ["master_auth"]
+    ignore_changes = [master_auth]
   }
 
   node_config {
@@ -26,9 +26,9 @@ resource "google_container_cluster" "primary" {
   }
 
   min_master_version = var.k8s_version
-  node_version = var.k8s_version
+  node_version       = var.k8s_version
 
-  network = google_compute_network.network.self_link
+  network    = google_compute_network.network.self_link
   subnetwork = google_compute_subnetwork.subnetwork.self_link
 
   network_policy {
@@ -49,7 +49,7 @@ resource "google_compute_subnetwork" "subnetwork" {
   ip_cidr_range = "10.2.0.0/16"
   network       = google_compute_network.network.self_link
   // get region from zone
-  region        = join("-", slice(split("-", var.location), 0, 2))
+  region = join("-", slice(split("-", var.location), 0, 2))
 }
 
 resource "google_compute_firewall" "polkadot" {
