@@ -54,10 +54,11 @@ func createTerraformOptions(t *testing.T, terraformDir string) (*terraform.Optio
     terraformOptions := &terraform.Options{
         TerraformDir: terraformDir,
         Vars: map[string]interface{}{
-            "cluster_name":    clusterName,
-            "gcp_project_id":  gcpProjectId,
-            "location":        "europe-west4-b",
-            "node_count":      nodeCount,
+            "cluster_name":   clusterName,
+            "gcp_project_id": gcpProjectId,
+            "location":       "europe-west4-b",
+            "machine_type":   "n1-standard-1",
+            "node_count":     nodeCount,
         },
         NoColor: true,
     }
