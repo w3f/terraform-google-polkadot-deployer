@@ -40,6 +40,9 @@ jobs:
           command: |
             echo "$GOOGLE_APPLICATION_CREDENTIALS_CONTENT" | base64 -d > $GOOGLE_APPLICATION_CREDENTIALS
             gcloud auth activate-service-account --key-file=$GOOGLE_APPLICATION_CREDENTIALS
+      - run:
+          description: Install dependencies
+          command: |
             wget -O helm.tgz https://get.helm.sh/helm-v3.2.1-linux-amd64.tar.gz
             tar -xvf helm.tgz
             mv linux-amd64/helm /usr/local/bin/
